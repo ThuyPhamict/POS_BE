@@ -10,7 +10,7 @@ const orderRoutes = require('./routes/orders');
 const customerRoutes = require('./routes/customerAvailableCheck');
 const newcustomersRoutes = require('./routes/newcustomers');
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ origin: ['http://localhost:5173', 'https://pos-ui-pham-a9bc85f0fe21.herokuapp.com'], credentials: true }));
 app.use(express.json());
 
 // Import routes
