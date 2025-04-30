@@ -24,7 +24,7 @@ app.use('/api/customerphonecheck', customerRoutes);
 app.use('/api/newcustomers', newcustomersRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/staffs', staffsRoutes);
-app.use('api/checkoutButton', checkoutButtonRoutes);
+app.use('/api/checkoutButton', checkoutButtonRoutes);
 
 
 // Start server
