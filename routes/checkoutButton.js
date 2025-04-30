@@ -10,7 +10,7 @@ router.post('/', async(req,res) => {
         
 
         const orderResult = await db.query(
-            'UPDATE orders SET staff_id = $1, status = "done", total = $2 WHERE id = $3', [staffId,total,orderId]
+            'UPDATE orders SET staff_id = $1, status, total = $2 WHERE id = $3', [staffId,'done',total,orderId]
         );
         res.status(201).json({ success: true, order: orderResult.rows[0] });
     }catch (err) {
