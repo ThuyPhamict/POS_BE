@@ -12,6 +12,8 @@ const newcustomersRoutes = require('./routes/newcustomers');
 const productsRoutes = require('./routes/products');
 const staffsRoutes = require('./routes/staffs');
 const checkoutButtonRoutes =require('./routes/checkoutButton');
+const orderHistoryView = require('./routes/orderHistory-view');
+const voidedOrderView = require('./routes/voidedOrder-view');
 
 
 app.use(cors({ origin: ['http://localhost:5173', 'https://pos-ui-pham-a9bc85f0fe21.herokuapp.com'], credentials: true }));
@@ -25,6 +27,8 @@ app.use('/api/newcustomers', newcustomersRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/staffs', staffsRoutes);
 app.use('/api/checkoutButton', checkoutButtonRoutes);
+app.use('/api/orderhistoryview', orderHistoryView);
+app.use('/api/voidedorderview', voidedOrderView);
 
 
 // Start server

@@ -13,6 +13,14 @@ router.post('/', async(req,res) => {
             'UPDATE orders SET staff_id = $1, status = $2, total_amount = $3 WHERE id = $4 RETURNING *',
              [staffId , 'done' , total , orderId]
         );
+
+        for (const item of items) {
+            await db.query(
+              'UPDATE products SET stock_quantity = stock_quantity - $1 WHERE id = $2',
+              [item.quantity, item.productId]
+            );
+          }
+
         res.status(201).json({ success: true, order: orderResult.rows[0] });
     }catch (err) {
         console.error("Error creating order:", err);
