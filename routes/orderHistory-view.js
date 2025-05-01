@@ -8,7 +8,15 @@ require('dotenv').config();
 
 router.get('/',authenticateToken, async (req, res) => {
     try {
-      const dbquery = "SELECT id AS order.id,customers.name AS customer_name,customers.phone AS customer_phone, staffs.name AS staff_name, orders.total_amount FROM orders JOIN customers ON orders.customer_id = customers.id LEFT JOIN staffs ON orders.staff_id = staffs.id WHERE status = 'done'";
+      const dbquery = `SELECT orders.id AS order_id,
+    customers.name AS customer_name,
+    customers.phone AS customer_phone, 
+    staffs.name AS staff_name, 
+    orders.total_amount 
+    FROM orders 
+    JOIN customers ON orders.customer_id = customers.id 
+    LEFT JOIN staffs ON orders.staff_id = staffs.id 
+    WHERE status = 'active'`;
       const result = await db.query(dbquery);
       res.json(result.rows);
     } catch (err) {
