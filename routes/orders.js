@@ -19,7 +19,6 @@ router.get('/', authenticateToken, async (req, res) => {
     const result = await db.query(dbquery);
     const orders = result.rows;
  
-    console.log(orders);
 
     if (orders.length === 0) {
       return res.status(200).json([]); 
@@ -53,7 +52,7 @@ router.get('/', authenticateToken, async (req, res) => {
 
     // Send the orders with items
     res.status(200).json(orders);
-    
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch orders' });
