@@ -26,7 +26,7 @@ router.get('/', authenticateToken, async (req, res) => {
           p.name AS product_name,
           oi.quantity,
           oi.unit_price
-        FROM order_items oi
+        FROM orderitems oi
         JOIN products p ON oi.product_id = p.id
         WHERE oi.order_id = $1
       `;
