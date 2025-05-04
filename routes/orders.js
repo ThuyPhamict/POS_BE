@@ -20,7 +20,7 @@ router.get('/', authenticateToken, async (req, res) => {
     const orders = result.rows;
  
     console.log(orders);
-    
+
     if (orders.length === 0) {
       return res.status(200).json([]); 
     }
@@ -34,7 +34,7 @@ router.get('/', authenticateToken, async (req, res) => {
         JOIN products p ON oi.product_id = p.id
         WHERE oi.order_id = $1
       `;
-      const itemsResult = await db.query(itemsQuery, [order.id]);
+      const itemsResult = await db.query(itemsQuery, [id]);
       order.items = itemsResult.rows;
     }
   } catch (err) {
