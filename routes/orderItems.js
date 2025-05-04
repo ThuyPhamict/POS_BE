@@ -8,6 +8,8 @@ router.post('/', async(req,res) => {
     try{
         const { orderId, items} = req.body;
 
+        await db.query('DELETE FROM orderitems WHERE order_id = $1', [orderId]);
+
         items.forEach(async element => {
             const { productId, quantity, unit_price} = element; 
             const orderItemsResult = await db.query(
