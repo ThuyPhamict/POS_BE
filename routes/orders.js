@@ -24,7 +24,7 @@ router.get('/', authenticateToken, async (req, res) => {
     if (orders.length === 0) {
       return res.status(200).json([]); 
     }
-    for (let order of orders) {
+    orders.forEach(async order => {
       const itemsQuery = `
         SELECT 
           p.name AS product_name,
@@ -36,7 +36,7 @@ router.get('/', authenticateToken, async (req, res) => {
       `;
       const itemsResult = await db.query(itemsQuery, [order.id]);
       order.items = itemsResult.rows;
-    }
+    })
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch orders' });
