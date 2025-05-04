@@ -15,9 +15,9 @@ router.post('/', async(req,res) => {
 
         const { orderId, items} = req.body;
 
-        items.array.forEach(element => {
+        items.forEach(async element => {
             const { productId, quantity, unit_price} = element; 
-            const orderItemsResult = db.query(
+            const orderItemsResult = await db.query(
                 `INSERT INTO orderitems(order_id, product_id, quantity, unit_price) VALUES ($1,$2,$3,$4) RETURNING *`,
                 [orderId, productId, quantity, unit_price ]
             );
