@@ -23,7 +23,7 @@ router.post('/', async(req,res) => {
             );
         });
         
-        res.status(201).json({ success: true, order: orderItemsResult.rows[0] });
+        res.status(201).json({ success: true, orderId: orderId});
     }catch (err) {
         console.error("Error creating order:", err);
         res.status(500).json({ error: "Failed to create order" });
