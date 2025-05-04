@@ -17,7 +17,22 @@ router.get('/', authenticateToken, async (req, res) => {
     LEFT JOIN staffs ON orders.staff_id = staffs.id 
     WHERE status = 'active'`;
     const result = await db.query(dbquery);
-    res.json(result.rows);
+    const orders = result.rows;
+
+
+    for (let order of orders) {
+      const itemsQuery = `
+        SELECT 
+          p.name AS product_name,
+          oi.quantity,
+          oi.unit_price
+        FROM order_items oi
+        JOIN products p ON oi.product_id = p.id
+        WHERE oi.order_id = $1
+      `;
+      const itemsResult = await db.query(itemsQuery, [order.id]);
+      order.items = itemsResult.rows;
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch orders' });

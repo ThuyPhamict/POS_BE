@@ -8,7 +8,7 @@ require('dotenv').config();
 
 router.get('/',authenticateToken, async (req, res) => {
     try {
-      const dbquery = `SELECT orders.id AS order_id,
+      const dbquery = `SELECT orders.id AS id,
       customers.name AS customer_name,
       customers.phone AS customer_phone, 
       staffs.name AS staff_name, 
