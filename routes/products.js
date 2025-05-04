@@ -6,7 +6,7 @@
   // GET all products
   router.get('/', async (req, res) => {
     try {
-      const result = await db.query('SELECT * FROM products');
+      const result = await db.query('SELECT * FROM products WHERE stock_quantity > 0');
       res.json(result.rows);
     } catch (err) {
       res.status(500).json({ error: err.message });
