@@ -24,19 +24,36 @@ router.get('/', authenticateToken, async (req, res) => {
     if (orders.length === 0) {
       return res.status(200).json([]); 
     }
-    orders.forEach(async order => {
-      const itemsQuery = `
-        SELECT 
-          p.name AS product_name,
-          oi.quantity,
-          oi.unit_price
-        FROM orderitems oi
-        JOIN products p ON oi.product_id = p.id
-        WHERE oi.order_id = $1
-      `;
-      const itemsResult = await db.query(itemsQuery, [order.id]);
-      order.items = itemsResult.rows;
-    })
+    const itemQuery = `
+      SELECT 
+        oi.order_id,
+        p.name AS product_name,
+        oi.quantity,
+        oi.unit_price
+      FROM orderitems oi
+      JOIN products p ON oi.product_id = p.id
+      WHERE oi.order_id = ANY($1::int[])
+    `;
+    const orderIds = orders.map(order => order.id);
+    const itemsResult = await db.query(itemQuery, [orderIds]);
+
+    // Create a map of items by order ID
+    const itemsMap = itemsResult.rows.reduce((map, item) => {
+      if (!map[item.order_id]) {
+        map[item.order_id] = [];
+      }
+      map[item.order_id].push(item);
+      return map;
+    }, {});
+
+    // Add the items to each order
+    orders.forEach(order => {
+      order.items = itemsMap[order.id] || [];
+    });
+
+    // Send the orders with items
+    res.status(200).json(orders);
+    
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch orders' });
