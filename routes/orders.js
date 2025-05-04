@@ -18,8 +18,12 @@ router.get('/', authenticateToken, async (req, res) => {
     WHERE status = 'active'`;
     const result = await db.query(dbquery);
     const orders = result.rows;
-
-
+ 
+    console.log(orders);
+    
+    if (orders.length === 0) {
+      return res.status(200).json([]); 
+    }
     for (let order of orders) {
       const itemsQuery = `
         SELECT 

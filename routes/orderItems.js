@@ -6,13 +6,6 @@ require('dotenv').config();
 // Update orders 
 router.post('/', async(req,res) => {
     try{
-        // const { orderId, productId, quantity, unit_price } = req.body;
-
-        // const orderItemsResult = await db.query(
-        //     `INSERT INTO orderitems(order_id, product_id, quantity, unit_price) VALUES ($1,$2,$3,$4) RETURNING *`,
-        //     [orderId, productId, quantity, unit_price ]
-        // );
-
         const { orderId, items} = req.body;
 
         items.forEach(async element => {
