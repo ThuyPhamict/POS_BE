@@ -58,10 +58,10 @@ router.get('/', async (req, res) => {
   });
   
   router.post('/void-order', async(req,res) => {
-    const {OrderId} = req.body;
+    const {orderId} = req.body;
     try{
       const result = await db.query(`UPDATE orders SET  status = $1 WHERE id = $2 RETURNING *`,
-      ['voided', OrderId]);
+      ['voided', orderId]);
     
       res.status(200).json({ message: 'Order voided successfully', order: result.rows[0] });
     } catch (error) {
