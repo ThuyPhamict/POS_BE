@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const db = require('../db');
-const authenticateToken = require('../middleware/authMiddleware');
 require('dotenv').config();
 
 
 
-router.get('/',authenticateToken, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
       const dbquery = `SELECT orders.id AS id,
       customers.name AS customer_name,
@@ -16,7 +15,7 @@ router.get('/',authenticateToken, async (req, res) => {
       FROM orders 
       JOIN customers ON orders.customer_id = customers.id 
       LEFT JOIN staffs ON orders.staff_id = staffs.id 
-      WHERE status = 'active'`;
+      WHERE status = 'voided'`;
       const result = await db.query(dbquery);
       res.json(result.rows);
     } catch (err) {
@@ -24,5 +23,6 @@ router.get('/',authenticateToken, async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch orders' });
     }
   });
+
 
   module.exports = router;
