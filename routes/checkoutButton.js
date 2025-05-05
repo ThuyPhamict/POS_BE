@@ -19,6 +19,13 @@ router.post('/', async(req,res) => {
               'UPDATE products SET stock_quantity = stock_quantity - $1 WHERE id = $2',
               [item.quantity, item.productId]
             );
+     
+            await db.query(
+              `UPDATE orderitems 
+               SET quantity = $1, unit_price = $2 
+               WHERE order_id = $3 AND product_id = $4`,
+              [item.quantity, item.unit_price, orderId, item.productId]
+            );
           }
 
         res.status(201).json({ success: true, order: orderResult.rows[0] });

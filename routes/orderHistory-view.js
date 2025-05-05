@@ -25,6 +25,21 @@ router.get('/', async (req, res) => {
   });
 
 
+  router.get('/ordercart', async(req,res) =>{
+    const {OrderId} = req.body;
+    try{
+      const result = await db.query(`
+      SELECT * FROM orders WHERE id = $1
+      `, OrderId);
+
+      res.status(200).json({ message: 'Order voided successfully', order: result.rows[0] });
+    }
+    catch (error) {
+      console.error('Error voiding order:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
   router.post('/void-order', async(req,res) => {
     const {OrderId} = req.body;
     try{
