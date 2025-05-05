@@ -39,7 +39,6 @@ router.get('/', async (req, res) => {
       );
   
       res.status(200).json({
-        message: 'Order items fetched successfully',
         items: result.rows
       });
     } catch (error) {
