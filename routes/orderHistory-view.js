@@ -34,12 +34,22 @@ router.get('/', async (req, res) => {
   
     try {
       const result = await db.query(
-        `SELECT * FROM orderitems WHERE order_id = $1`,
+        `SELECT 
+           oi.id, 
+           oi.order_id, 
+           oi.product_id, 
+           oi.quantity, 
+           oi.unit_price AS price,
+           p.name 
+         FROM orderitems oi
+         JOIN products p ON oi.product_id = p.id
+         WHERE oi.order_id = $1`,
         [orderId]
       );
   
       res.status(200).json({
-        items: result.rows
+        items: result.rows,
+
       });
     } catch (error) {
       console.error('Error fetching order items:', error);
