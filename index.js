@@ -17,7 +17,7 @@ const voidedOrderView = require('./routes/voidedOrder-view');
 const orderItemsView =  require('./routes/orderItems');
 
 
-app.use(cors({ origin: ['http://localhost:5173', 'https://pos-be-pham-5c635ce0026f.herokuapp.com'], credentials: true }));
+app.use(cors({ origin: ['http://localhost:5173', 'https://pos-be-pham-5c635ce0026f.herokuapp.com', 'https://pos-ui-pham-a9bc85f0fe21.herokuapp.com'], credentials: true }));
 app.use(express.json());
 
 // Import routes
