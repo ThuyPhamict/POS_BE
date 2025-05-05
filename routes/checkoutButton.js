@@ -20,13 +20,27 @@ router.post('/', async(req,res) => {
               [item.quantity, item.productId]
             );
      
-            await db.query(
-              `INSERT INTO orderitems (order_id, product_id, quantity, unit_price)
-               VALUES ($1, $2, $3, $4)
-               ON CONFLICT (order_id, product_id)
-               DO UPDATE SET quantity = EXCLUDED.quantity, unit_price = EXCLUDED.unit_price`,
-              [orderId, item.productId, item.quantity, item.unit_price]
+            const result = await db.query(
+              'SELECT 1 FROM orderitems WHERE order_id = $1 AND product_id = $2',
+              [orderId, item.productId]
             );
+          
+            if (result.rowCount > 0) {
+              // Update existing
+              await db.query(
+                `UPDATE orderitems 
+                 SET quantity = $1, unit_price = $2 
+                 WHERE order_id = $3 AND product_id = $4`,
+                [item.quantity, item.unit_price, orderId, item.productId]
+              );
+            } else {
+              // Insert new
+              await db.query(
+                `INSERT INTO orderitems (order_id, product_id, quantity, unit_price)
+                 VALUES ($1, $2, $3, $4)`,
+                [orderId, item.productId, item.quantity, item.unit_price]
+              );
+            }
           }
 
         res.status(201).json({ success: true, order: orderResult.rows[0] });
