@@ -12,7 +12,7 @@ const newcustomersRoutes = require('./routes/newcustomers');
 const productsRoutes = require('./routes/products');
 const staffsRoutes = require('./routes/staffs');
 const checkoutButtonRoutes =require('./routes/checkoutButton');
-const orderHistoryView = require('./routes/orderHistory-vixew');
+const orderHistoryView = require('./routes/orderHistory-view');
 const voidedOrderView = require('./routes/voidedOrder-view');
 const orderItemsView =  require('./routes/orderItems');
 
