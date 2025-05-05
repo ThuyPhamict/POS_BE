@@ -25,21 +25,29 @@ router.get('/', async (req, res) => {
   });
 
 
-  router.get('/ordercart', async(req,res) =>{
-    const {OrderId} = req.body;
-    try{
-      const result = await db.query(`
-      SELECT * FROM orders WHERE id = $1
-      `, OrderId);
-
-      res.status(200).json({ message: 'Order voided successfully', order: result.rows[0] });
+  router.get('/ordercart', async (req, res) => {
+    const { orderId } = req.query;
+  
+    if (!orderId) {
+      return res.status(400).json({ message: 'Missing orderId in query parameters.' });
     }
-    catch (error) {
-      console.error('Error voiding order:', error);
+  
+    try {
+      const result = await db.query(
+        `SELECT * FROM orderitems WHERE order_id = $1`,
+        [orderId]
+      );
+  
+      res.status(200).json({
+        message: 'Order items fetched successfully',
+        items: result.rows
+      });
+    } catch (error) {
+      console.error('Error fetching order items:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
   });
-
+  
   router.post('/void-order', async(req,res) => {
     const {OrderId} = req.body;
     try{
