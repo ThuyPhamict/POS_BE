@@ -21,10 +21,11 @@ router.post('/', async(req,res) => {
             );
      
             await db.query(
-              `UPDATE orderitems 
-               SET quantity = $1, unit_price = $2 
-               WHERE order_id = $3 AND product_id = $4`,
-              [item.quantity, item.unit_price, orderId, item.productId]
+              `INSERT INTO orderitems (order_id, product_id, quantity, unit_price)
+               VALUES ($1, $2, $3, $4)
+               ON CONFLICT (order_id, product_id)
+               DO UPDATE SET quantity = EXCLUDED.quantity, unit_price = EXCLUDED.unit_price`,
+              [orderId, item.productId, item.quantity, item.unit_price]
             );
           }
 
